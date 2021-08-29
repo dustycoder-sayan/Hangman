@@ -2,36 +2,43 @@
 
 import random
 import os
-from hangman_conditions import single_letter_check, stages
+from hangman_conditions import single_letter_check, stages      
 
 print("Let's play Hangman!!")
 name = input("Enter your name: ")
 print("\nAll the best, {}!!\n".format(name))
 
-wrong_guess_limit = 7       # Hangman ends at 7 wrong guesses
+# Hangman ends at 7 wrong guesses
+wrong_guess_limit = 7       
 
 selected_word = ""
-with open(os.path.abspath('.\\Hangman\\words.txt'), "r") as word:   # calling file containing words - words.txt
+
+# calling file containing words and selecting a random word - words.txt
+with open(os.path.abspath('.\\Hangman\\words.txt'), "r") as word:   
     words1 = word.read()
     wordl = words1.split()
-    selected_word = random.choice(wordl)            # selecting random word form the file
+    selected_word = random.choice(wordl)            
 
+# To store the previous guessed by the player
+prev_guess=""
 
-prev_guess=""                                       # To store the letters already entered by player
-s=list("*"*len(selected_word))
+# would display the letter not guessed and letters guessed in serial order
+s=list("*"*len(selected_word))                      
 print(" ".join(s))
 while "".join(s) != selected_word:
     print()
-    next_guess = single_letter_check("ar")
+    
+    # check if the string input has a single character and repeat procedure if letter entered is not a single character
+    next_guess = single_letter_check("ar")          
     if single_letter_check(next_guess):
         if next_guess in selected_word:
             print("\nYou've guessed it right!!")
-            for index, letter in enumerate(selected_word):      # replace entered correct letters in the word expressed with *
+            for index, letter in enumerate(selected_word):     
                 if letter == next_guess:
-                    s[index] = letter
+                    s[index] = letter                   
             print(" ".join(s))
             print(wrong_guess_limit)
-            prev_guess += next_guess+" "
+            prev_guess += next_guess+" "                
             print("Previous guesses: ", prev_guess)
         else:
             print("\nWrong entry!")
@@ -40,9 +47,10 @@ while "".join(s) != selected_word:
             print("Previous guesses: ", prev_guess)
             print(" ".join(s))
             print(wrong_guess_limit)
-            print(stages(wrong_guess_limit))                    # prints hangman stage by stage
+            print(stages(wrong_guess_limit))                    
         if wrong_guess_limit == 0:
             print("Your chances are done!")
             break
 else:
-    print("You guessed it right!")                          # prints when loop doesn't break out, i.e, user entered the word correctly
+    print("You guessed it right!")                          
+# prints when loop doesn't break out, i.e, user entered the word correctly
